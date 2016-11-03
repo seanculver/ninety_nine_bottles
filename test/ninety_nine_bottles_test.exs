@@ -3,9 +3,9 @@ defmodule NinetyNineBottlesTest do
 
   import ExUnit.CaptureIO
 
-  test "Starts the program" do
+  test "Displays a single verse" do
     execute_run = fn ->
-      NinetyNineBottles.run(1)
+      NinetyNineBottles.sing(1)
     end
 
     assert capture_io(execute_run) =~
@@ -13,5 +13,12 @@ defmodule NinetyNineBottlesTest do
     1 bottles of Elixir on the wall, 1 bottles of Elixir.
     Take one down and pass it around, 0 bottles of Elixir on the wall.
     """
+  end
+
+  test "Singer receives the count from a process" do
+    singer = self()
+    NinetyNineBottles.sing_new_verse(singer, 1)
+
+    assert_receive {1}
   end
 end
